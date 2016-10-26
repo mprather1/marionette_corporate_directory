@@ -8,11 +8,11 @@ _.templateSettings = {
 };
 
 var User = Backbone.Model.extend({
-  urlRoot: "http://68.103.65.157:8000/api/users"
+  urlRoot: "http://localhost:8000/api/users"
 });
 
 var Users = Backbone.Collection.extend({
-  url: "http://68.103.65.157:8000/api/users",
+  url: "http://localhost:8000/api/users",
   model: User,
   comparator: function(m){
     return m.get(this.sortField);
