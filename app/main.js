@@ -222,7 +222,7 @@ var PageView = Backbone.Marionette.View.extend({
     }));
     this.showChildView('form', new SidebarView({
       collection: this.collection,
-    }))
+    }));
   },
 });
 
@@ -245,9 +245,9 @@ var SidebarView = Backbone.Marionette.View.extend(({
   showForm: function(){
     this.showChildView('body', new FormView({
       collection: this.collection
-    }))
+    }));
   }
-}))
+}));
 
 var users = new Users();
 users.fetch();
