@@ -108,10 +108,33 @@ var UsersTableView = Backbone.Marionette.View.extend({
   }
 });
 
+var UsersFormView = Backbone.Marionette.View.extend({
+  template: _.template("<h3>Admin</h3>"),
+  // tagName: 'h1'
+})
+
+var PageView = Backbone.Marionette.View.extend({
+  template: '#page-template',
+  regions: {
+    body: {
+      el: '#table-view',
+    },
+    form: {
+      el: '#form-view',
+    }
+  },
+  onRender: function(){
+    this.showChildView('body', new UsersTableView({
+      collection: this.collection,
+    }));
+    this.showChildView('form', new UsersFormView({
+    }))
+  },
+})
 var users = new Users();
 users.fetch();
 
-var usersView = new UsersTableView({
+var usersView = new PageView({
   collection: users
 });
 

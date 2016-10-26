@@ -10,8 +10,10 @@
   </head>
   <body>
     <script type="text/template" id="user-table">
-      <thead>
-        <h3>Users</h3>
+      <thead class="thead-default">
+        <tr>
+          <th>Users</th>
+        </tr>
         <tr>
           <th id="name" class="table-header">Name</th>
           <th id="phone" class="table-header">Phone</th>
@@ -25,6 +27,12 @@
       <td>{{phone}}</td>
       <td>{{email}}</td>
     </script>
+    <script type="text/template" id="page-template">
+      <div class="row">
+        <div id='form-view' class="col-sm-3"></div>
+        <div id='table-view' class="col-sm-9"></div>
+      </div>
+    </script>
     <header>
       <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="navbar-inner">
@@ -33,8 +41,8 @@
       </nav>
     </header>
 
-    <div class="container">
-      <div id="main"></div>
+    <div  id="main" class="container">
+
     </div>
 
   	<script src="bower_components/underscore/underscore.js"></script>
