@@ -1,0 +1,23 @@
+{
+  "name": "marionette",
+  "authors": [
+    "Michael Prather"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "^3.1.1",
+    "underscore": "^1.8.3",
+    "backbone": "^1.3.3",
+    "backbone.marionette": "marionette#^3.1.0"
+  }
+}

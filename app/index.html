@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Marionette</title>
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="public/css/style.css" type="text/css" />
+  	<script src="bower_components/jquery/dist/jquery.js"></script>
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap-theme.css" />
+  </head>
+  <body>
+    <script type="text/template" id="user-table">
+        <thead>
+          <tr>
+            <th id="name-column" class="table-header">Name</th>
+            <th id="phone-column" class="table-header">Phone</th>
+            <th id="email-column" class="table-header">Email</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+    </script>
+    <script type="text/template" id="user-row">
+      <td>{{firstName + " " + lastName}}</td>
+      <td>{{phone}}</td>
+      <td>{{email}}</td>
+    </script>
+    <header>
+      <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="navbar-inner">
+          <span class="navbar-brand active">Company Database</span>
+        </div>
+      </nav>
+    </header>
+
+    <div class="container">
+      <div id="main"></div>
+    </div>
+
+  	<script src="bower_components/underscore/underscore.js"></script>
+  	<script src="bower_components/backbone/backbone.js"></script>
+  	<script src="bower_components/backbone.radio/build/backbone.radio.js"></script>
+  	<script src="bower_components/backbone.marionette/lib/backbone.marionette.js"></script>
+  	<script type="text/javascript" src="main.js"></script>
+  </body>
+</html>
