@@ -37,43 +37,45 @@
       </div>
     </script>
     
-    <script type="text/template" id="form-view">
+    <script type="text/template" id="form-view-template">
       <div class="panel panel-default">
         <div class="panel-heading">Create new User</div>
-        <div class="panel-body" id="form-view-panel">
-          <div class="form-group">
-            <label for="firstName" class="control-label">First Name</label>
-            <input class="form-control" type="text" id="firstName_input" name="firstName" placeholder="Enter first name...">
-            <span class="help-block hidden"></span>
-          </div>
-          <div class="form-group">
-            <label for="lastName" class="control-label">Last Name</label>
-            <input class="form-control" type="text" id="lastName_input" name="lastName" placeholder="Enter last name...">
-            <span class="help-block hidden"></span>
-          </div>
-          <div class="form-group">
-            <label for="phone" class="control-label">Phone Number</label>
-            <input class="form-control" type="text" id="phone_input" name="phone" placeholder="Enter phone number...">
-            <span class="help-block hidden"></span>
-          </div>
-          <div class="form-group">
-            <label for="email" class="control-label">Email</label>
-            <input class="form-control" type="text" id="email_input" name="email" placeholder="Enter email address..."...">
-            <span class="help-block hidden"></span>
-          </div>         
-        </div>  
+        <div class="panel-body" id="form-view-panel"></div>  
         <div class="panel-footer">
           <button class="btn btn-default submit-button">Submit</button>
           <button class="btn btn-default cancel-button">Cancel</button>
-         </div>
+        </div>
       </div>
     </script>
     
+    <script type="text/template" id="users-form-template" >
+      <div class="form-group">
+        <label for="firstName" class="control-label">First Name</label>
+        <input class="form-control" type="text" id="firstName_input" name="firstName" placeholder="Enter first name...">
+        <span class="help-block hidden"></span>
+      </div>
+      <div class="form-group">
+        <label for="lastName" class="control-label">Last Name</label>
+        <input class="form-control" type="text" id="lastName_input" name="lastName" placeholder="Enter last name...">
+        <span class="help-block hidden"></span>
+      </div>
+      <div class="form-group">
+        <label for="phone" class="control-label">Phone Number</label>
+        <input class="form-control" type="text" id="phone_input" name="phone" placeholder="Enter phone number...">
+        <span class="help-block hidden"></span>
+      </div>
+      <div class="form-group">
+        <label for="email" class="control-label">Email</label>
+        <input class="form-control" type="text" id="email_input" name="email" placeholder="Enter email address..."...">
+        <span class="help-block hidden"></span>
+      </div> 
+    </script>
+    
     <script type="text/template" id="sidebar-template">
-    <h4>Admin</h4>
-    <div id="sidebar-content">
-      <button class='btn btn-block btn-inverse show-button'>Create New User</button>
-    </div>
+      <h4>Admin</h4>
+      <div id="sidebar-content">
+        <button class='btn btn-block btn-inverse show-button'>Create New User</button>
+      </div>
     </script>
     
     <header>
@@ -84,15 +86,13 @@
       </nav>
     </header>
 
-    <div  id="main" class="container">
-
-    </div>
+    <div  id="main" class="container"></div>
 
   	<script src="bower_components/underscore/underscore.js"></script>
   	<script src="bower_components/backbone/backbone.js"></script>
   	<script src="bower_components/backbone.radio/build/backbone.radio.js"></script>
   	<script src="bower_components/backbone.marionette/lib/backbone.marionette.js"></script>
-  	 <script src="bower_components/backbone.validation/dist/backbone-validation.js"></script>
+  	<script src="bower_components/backbone.validation/dist/backbone-validation.js"></script>
   	<script type="text/javascript" src="main.js"></script>
   </body>
 </html>

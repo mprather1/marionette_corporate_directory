@@ -163,32 +163,12 @@ var FormView = Backbone.Marionette.View.extend({
     }
   },
   onRender: function(){
-    this.showChildView('body', new UsersFormView({
-      model: this.model,
-      collection: this.collection
-    }));
-  },
-  submitForm: function(e){
-    e.preventDefault();
-    Backbone.trigger('header:submitusersform')
-  },
-  cancelForm: function(e){
-    e.preventDefault();
-    Backbone.trigger('header:cancelform')
-  }
-});
-
-var UsersFormView = Backbone.Marionette.View.extend({
-  initialize: function(){
-    this.listenTo(Backbone, 'header:submitusersform', this.submitUsersForm)
-  },
-  template: "#users-form-template",
-  onRender: function(){
     Backbone.Validation.bind(this, {
       model: this.model
     });
   },
-  submitUsersForm: function(){
+  submitForm: function(e){
+    e.preventDefault();
     var userAttrs = {
       firstName: $('#firstName_input').val(),
       lastName: $('#lastName_input').val(),
@@ -197,16 +177,25 @@ var UsersFormView = Backbone.Marionette.View.extend({
     };
     this.model.set(userAttrs);
     if(this.model.isValid(true)){
+      console.log("valid")
       this.model.save();
       this.collection.add(this.model);
       Backbone.Validation.unbind(this);
       Backbone.trigger('header:cancelform')
     }
+  },
+  cancelForm: function(e){
+    e.preventDefault();
+    Backbone.trigger('header:cancelform')
   }
 });
 
+var UsersFormView = Backbone.Marionette.View.extend({
+  template: "#users-form-template",
+  
+})
+
 var PageView = Backbone.Marionette.View.extend({
-  tagName: "main",
   template: '#page-template',
   regions: {
     body: {
