@@ -7,12 +7,45 @@ _.templateSettings = {
     interpolate: /\{\{(.+?)\}\}/g
 };
 
+_.extend(Backbone.Validation.callbacks, {
+  valid: function (view, attr, selector) {
+    var $el = view.$('[name=' + attr + ']'), 
+        $group = $el.closest('.form-group');
+    $group.removeClass('has-error');
+    $group.find('.help-block').html('').addClass('hidden');
+  },
+  invalid: function (view, attr, error, selector) {
+    var $el = view.$('[name=' + attr + ']'), 
+      $group = $el.closest('.form-group');
+    $group.addClass('has-error');
+    $group.find('.help-block').html(error).removeClass('hidden');
+  }
+});
+
 var User = Backbone.Model.extend({
-  urlRoot: "http://localhost:8000/api/users"
+  urlRoot: "http://68.103.65.157:8000/api/users",
+  validation: {
+    firstName: {
+      required: true
+    },
+    lastName: {
+      required: true
+    },
+    email: {
+      required: true,
+      pattern: 'email'
+    },
+    phone: {
+      required: true,
+      pattern: 'number',
+      minLength: 10,
+      maxLength: 10
+    }
+  },
 });
 
 var Users = Backbone.Collection.extend({
-  url: "http://localhost:8000/api/users",
+  url: "http://68.103.65.157:8000/api/users",
   model: User,
   comparator: function(m){
     return m.get(this.sortField);
@@ -108,19 +141,29 @@ var UsersTableView = Backbone.Marionette.View.extend({
   }
 });
 
-var FormView = Backbone.Marionette.View.extend({
+var UserFormView = Backbone.Marionette.View.extend({
+  initialize: function(){
+    this.model = new User()
+  },
   tagName: 'form',
   template: "#form-view",
   ui: {
-    submit: '.submit-button'
+    submit: '.submit-button',
+    cancel: '.cancel-button'
   },
   events: {
-    'click @ui.submit': "submitForm"
+    'click @ui.submit': "submitForm",
+    'click @ui.cancel': 'render'
   },
   regions: {
     body: {
       el: '#form-view-panel'
     }
+  },
+  onRender: function(){
+    Backbone.Validation.bind(this, {
+      model: this.model
+    });
   },
   submitForm: function(e){
     e.preventDefault();
@@ -130,14 +173,14 @@ var FormView = Backbone.Marionette.View.extend({
       email: $('#email_input').val(),
       phone: $('#phone_input').val()
     };
-    var newUser = new User();
-    newUser.set(userAttrs);
-    // if(newUser.isValid(true)){
-      newUser.save();
-      this.collection.add(newUser);
-      // Backbone.Validation.unbind(this);
+    this.model.set(userAttrs);
+    if(this.model.isValid(true)){
+      console.log("valid")
+      this.model.save();
+      this.collection.add(this.model);
+      Backbone.Validation.unbind(this);
       this.render();
-    // }
+    }
   }
 });
 
@@ -155,11 +198,12 @@ var PageView = Backbone.Marionette.View.extend({
     this.showChildView('body', new UsersTableView({
       collection: this.collection,
     }));
-    this.showChildView('form', new FormView({
+    this.showChildView('form', new UserFormView({
       collection: this.collection
     }))
   },
-})
+});
+
 var users = new Users();
 users.fetch();
 
