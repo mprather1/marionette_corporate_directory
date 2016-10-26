@@ -8,11 +8,11 @@ _.templateSettings = {
 };
 
 var User = Backbone.Model.extend({
-  urlRoot: "http://localhost:8000/api/users"
+  urlRoot: "http://68.103.65.157:8000/api/users"
 });
 
 var Users = Backbone.Collection.extend({
-  url: "http://localhost:8000/api/users",
+  url: "http://68.103.65.157:8000/api/users",
   model: User,
   comparator: function(m){
     return m.get(this.sortField);
@@ -108,11 +108,32 @@ var UsersTableView = Backbone.Marionette.View.extend({
   }
 });
 
-var UsersFormView = Backbone.Marionette.View.extend({
-  template: _.template("<h3>Admin</h3>"),
-  // tagName: 'h1'
+var FormView = Backbone.Marionette.View.extend({
+  tagName: 'form',
+  template: "#form-view",
+  ui: {
+    submit: '.submit'
+  },
+  events: {
+    'click @ui.submit': "submitForm"
+  },
+  regions: {
+    body: {
+      el: '#form-view-panel'
+    }
+  },
+  onRender: function(){
+    this.showChildView('body', new UsersFormView({
+    }))
+  },
+  submitForm: function(){
+    console.log("submitted")
+  }
 })
 
+var UsersFormView = Backbone.Marionette.View.extend({
+  template: "#users-form-view",
+})
 var PageView = Backbone.Marionette.View.extend({
   template: '#page-template',
   regions: {
@@ -127,7 +148,7 @@ var PageView = Backbone.Marionette.View.extend({
     this.showChildView('body', new UsersTableView({
       collection: this.collection,
     }));
-    this.showChildView('form', new UsersFormView({
+    this.showChildView('form', new FormView({
     }))
   },
 })
