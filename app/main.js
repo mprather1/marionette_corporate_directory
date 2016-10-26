@@ -64,6 +64,7 @@ var UsersTableView = Backbone.Marionette.View.extend({
   initialize: function(){
     this.sortField = "lastName";
     this.sortDirection = "ASC";
+    this.listenTo(this.collection, 'sync', this.render);
   },
   tagName: "table",
   className: 'table table-hover',
@@ -109,8 +110,24 @@ var UsersTableView = Backbone.Marionette.View.extend({
 });
 
 var UsersFormView = Backbone.Marionette.View.extend({
-  template: _.template("<h3>Admin</h3>"),
-  // tagName: 'h1'
+  template: "#user-form-template",
+  events: {
+    'click .submit-button': 'addUser',
+  },
+  addUser: function(e){
+    e.preventDefault();
+    var userAttrs = {
+      firstName: $('#firstName_input').val(),
+      lastName: $('#lastName_input').val(),
+      email: $('#email_input').val(),
+      phone: $('#phone_input').val()
+    };
+    var new_user = new User();
+    console.log(userAttrs)
+    new_user.set(userAttrs);
+    new_user.save();
+    this.collection.add(this.model);
+  }
 })
 
 var PageView = Backbone.Marionette.View.extend({
@@ -128,6 +145,7 @@ var PageView = Backbone.Marionette.View.extend({
       collection: this.collection,
     }));
     this.showChildView('form', new UsersFormView({
+      collection: this.collection
     }))
   },
 })
