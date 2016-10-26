@@ -112,7 +112,7 @@ var FormView = Backbone.Marionette.View.extend({
   tagName: 'form',
   template: "#form-view",
   ui: {
-    submit: '.submit'
+    submit: '.submit-button'
   },
   events: {
     'click @ui.submit': "submitForm"
@@ -122,18 +122,25 @@ var FormView = Backbone.Marionette.View.extend({
       el: '#form-view-panel'
     }
   },
-  onRender: function(){
-    this.showChildView('body', new UsersFormView({
-    }))
-  },
-  submitForm: function(){
-    console.log("submitted")
+  submitForm: function(e){
+    e.preventDefault();
+    var userAttrs = {
+      firstName: $('#firstName_input').val(),
+      lastName: $('#lastName_input').val(),
+      email: $('#email_input').val(),
+      phone: $('#phone_input').val()
+    };
+    var newUser = new User();
+    newUser.set(userAttrs);
+    // if(newUser.isValid(true)){
+      newUser.save();
+      this.collection.add(newUser);
+      // Backbone.Validation.unbind(this);
+      this.render();
+    // }
   }
-})
+});
 
-var UsersFormView = Backbone.Marionette.View.extend({
-  template: "#users-form-view",
-})
 var PageView = Backbone.Marionette.View.extend({
   template: '#page-template',
   regions: {
@@ -149,6 +156,7 @@ var PageView = Backbone.Marionette.View.extend({
       collection: this.collection,
     }));
     this.showChildView('form', new FormView({
+      collection: this.collection
     }))
   },
 })
