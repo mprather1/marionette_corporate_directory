@@ -35,11 +35,14 @@ var UsersView = Backbone.Marionette.CollectionView.extend({
 });
 
 var UsersTableView = Backbone.Marionette.View.extend({
+  initialize: function(){
+    this.sortFlag = null
+  },
   tagName: "table",
   className: 'table table-hover',
   template: '#user-table',
   events: {
-    'click': 'anything',
+    'click .table-header': 'sortUsers',
     'mouseover .table-header': 'mouseoverFunc',
     'mouseout .table-header': 'mouseoutFunc'
   },
@@ -51,8 +54,39 @@ var UsersTableView = Backbone.Marionette.View.extend({
   },
   onRender: function(){
     this.showChildView('body', new UsersView({
+      collection: this.collection,
+      sort: false
+    }));
+    this.showChildView('body', new UsersView({
       collection: this.collection
     }));
+  },
+  sortUsers: function(flag){
+    console.log(flag.target.id)
+    if (flag.target.id === 'name'){
+      var name = 'lastName';
+    } else {
+      var name = flag.target.id;
+    }
+    if (this.sortFlag === false){
+      // var order = 'asc';
+      console.log(this.sortFlag)
+      this.collection.comparator = function(user){
+        console.log(user.get(name))
+        return -user.get(name)
+      }
+      this.sortFlag = true;
+      this.collection.sort();
+    } else {
+      console.log(this.sortFlag)
+      // order = 'desc';
+      this.collection.comparator = function(user){
+        console.log(user.get(name))
+        return user.get(name)
+      }
+      this.sortFlag = false;
+      this.collection.sort();
+    }
   },
   mouseoverFunc: function(event){
     $(event.currentTarget).css({"background-color":"yellow","cursor":"pointer"});
