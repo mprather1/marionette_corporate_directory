@@ -23,7 +23,7 @@ _.extend(Backbone.Validation.callbacks, {
 });
 
 var User = Backbone.Model.extend({
-  urlRoot: "http://68.103.65.157:8000/api/users",
+  urlRoot: "http://localhost:8000/api/users",
   validation: {
     firstName: {
       required: true
@@ -45,7 +45,7 @@ var User = Backbone.Model.extend({
 });
 
 var Users = Backbone.Collection.extend({
-  url: "http://68.103.65.157:8000/api/users",
+  url: "http://localhost:8000/api/users",
   model: User,
   comparator: function(m){
     return m.get(this.sortField);
@@ -96,7 +96,8 @@ var UsersView = Backbone.Marionette.CollectionView.extend({
 var UsersTableView = Backbone.Marionette.View.extend({
   initialize: function(){
     this.sortField = "lastName";
-    this.sortDirection = "ASC";
+    this.sortDirection = "DESC";
+    this.sortFlag = false;
   },
   tagName: "table",
   className: 'table table-hover',
@@ -116,6 +117,7 @@ var UsersTableView = Backbone.Marionette.View.extend({
     this.showChildView('body', new UsersView({
       collection: this.collection,
     }));
+    this.collection.sort();
   },
   sortUsers: function(flag){
     if (flag.target.id === 'name'){
@@ -143,7 +145,7 @@ var UsersTableView = Backbone.Marionette.View.extend({
 
 var UsersFormView = Backbone.Marionette.View.extend({
   initialize: function(){
-    this.model = new User()
+    this.model = new User();
   },
   tagName: 'form',
   template: "#form-view",
@@ -179,7 +181,7 @@ var UsersFormView = Backbone.Marionette.View.extend({
       this.model.save();
       this.collection.add(this.model);
       Backbone.Validation.unbind(this);
-      this.render();
+      Backbone.trigger('header:cancelform')
     }
   },
   cancelForm: function(e){
