@@ -141,7 +141,7 @@ var UsersTableView = Backbone.Marionette.View.extend({
   }
 });
 
-var UserFormView = Backbone.Marionette.View.extend({
+var UsersFormView = Backbone.Marionette.View.extend({
   initialize: function(){
     this.model = new User()
   },
@@ -153,7 +153,7 @@ var UserFormView = Backbone.Marionette.View.extend({
   },
   events: {
     'click @ui.submit': "submitForm",
-    'click @ui.cancel': 'render'
+    'click @ui.cancel': 'cancelForm'
   },
   regions: {
     body: {
@@ -181,6 +181,10 @@ var UserFormView = Backbone.Marionette.View.extend({
       Backbone.Validation.unbind(this);
       this.render();
     }
+  },
+  cancelForm: function(e){
+    e.preventDefault();
+    Backbone.trigger('header:cancelform')
   }
 });
 
@@ -198,11 +202,34 @@ var PageView = Backbone.Marionette.View.extend({
     this.showChildView('body', new UsersTableView({
       collection: this.collection,
     }));
-    this.showChildView('form', new UserFormView({
-      collection: this.collection
+    this.showChildView('form', new SidebarView({
+      collection: this.collection,
     }))
   },
 });
+
+var SidebarView = Backbone.Marionette.View.extend(({
+  initialize: function(){
+    this.listenTo(Backbone, 'header:cancelform', this.render)
+  },
+  template: "#sidebar-template",
+  regions: {
+    body: {
+      el: "#sidebar-content"
+    }
+  },
+  ui: {
+    show: '.show-button'
+  },
+  events: {
+    'click @ui.show': 'showForm'
+  },
+  showForm: function(){
+    this.showChildView('body', new UsersFormView({
+      collection: this.collection
+    }))
+  }
+}))
 
 var users = new Users();
 users.fetch();
