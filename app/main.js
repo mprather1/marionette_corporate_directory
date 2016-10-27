@@ -50,7 +50,7 @@ var Users = Backbone.PageableCollection.extend({
   model: User,
   state: {
     pageSize: 10,
-    // sortKey: 'id',
+    sortKey: null,
     order: 1
   },
   queryParams: {
@@ -104,13 +104,21 @@ var UsersView = Backbone.Marionette.CollectionView.extend({
   initialize: function(){
     this.listenTo(Backbone, 'header:nextpage', this.nextPage),
     this.listenTo(Backbone, 'header:prevpage', this.prevPage)
+    this.listenTo(Backbone, 'header:firstpage', this.firstPage)
+    this.listenTo(Backbone, 'header:lastpage', this.lastPage)
   },
   prevPage: function(){
-    this.collection.getPreviousPage()
+    this.collection.getPreviousPage();
   },
   nextPage: function(){
-    this.collection.getNextPage()
+    this.collection.getNextPage();
   },
+  firstPage: function(){
+    this.collection.getFirstPage();
+  },
+  lastPage: function(){
+    this.collection.getLastPage();
+  }  
 });
 
 var UsersTableView = Backbone.Marionette.View.extend({
@@ -239,6 +247,8 @@ var PageView = Backbone.Marionette.View.extend({
   events: {
     'click .prev-page': 'prevPage',
     'click .next-page': 'nextPage',
+    'click .first-page': 'firstPage',
+    'click .last-page': 'lastPage',
   },
   onRender: function(){
     this.showChildView('body', new UsersTableView({
@@ -253,6 +263,15 @@ var PageView = Backbone.Marionette.View.extend({
   },
   prevPage: function(){
     Backbone.trigger('header:prevpage')
+  },
+  firstPage: function(){
+    Backbone.trigger('header:firstpage')
+  },
+  lastPage: function(){
+    Backbone.trigger('header:lastpage')
+  },
+  currentPage: function(e, i){
+    console.log("e: " + e + " i: " + i) 
   },
 });
 
