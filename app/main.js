@@ -50,39 +50,13 @@ var Users = Backbone.PageableCollection.extend({
   model: User,
   state: {
     pageSize: 10,
-    sortKey: null,
+    sortKey: 'id',
     order: 1
   },
   queryParams: {
     totalPages: null,
     totalRecords: null,
   },
-  comparator: function(m){
-    return m.get(this.sortField);
-  },
-  setSortField: function(field, direction){
-    this.sortField = field;
-    this.sortDirection = direction;
-  },
-  sortBy: function(iterator, context){
-    var obj = this.models,
-    direction = this.sortDirection;
-    return _.pluck(_.map(obj, function (value, index, list){
-      return {
-        value: value,
-        index: index,
-        criteria: iterator.call(context, value, index, list)
-      };
-    }).sort(function(left, right){
-      var a = direction === "ASC" ? left.criteria : right.criteria;
-      var b = direction === "ASC" ? right.criteria : left.criteria;
-      if (a != b){
-        if (a > b || a === void 0) return 1;
-        if (a < b || b === void 0) return -1;
-      }
-      return left.index < right.index ? -1 : 1;
-    }), 'value');
-  }
 });
 
 var UserView = Backbone.Marionette.View.extend({
@@ -90,7 +64,7 @@ var UserView = Backbone.Marionette.View.extend({
   template: '#user-row',
   serializeData: function(){
     return {
-      "firstName": this.model.attributes.firstName.capitalizedFirstLetter(),
+      "name": this.model.attributes.firstName.capitalizedFirstLetter() + " " + this.model.attributes.lastName.capitalizedFirstLetter(),
       "lastName": this.model.attributes.lastName.capitalizedFirstLetter(),
       "phone": this.model.attributes.phone.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3'),
       "email": this.model.attributes.email
@@ -145,22 +119,19 @@ var UsersTableView = Backbone.Marionette.View.extend({
     this.showChildView('body', new UsersView({
       collection: this.collection,
     }));
-    this.collection.sort();
+    this.collection.setSorting('lastName')
+    this.collection.fullCollection.sort();
   },
   sortUsers: function(flag){
-    if (flag.target.id === 'name'){
-      var name = 'lastName';
-    } else {
-      var name = flag.target.id;
-    }
+    var name = flag.target.id;
     if (this.sortFlag === false){
       this.sortFlag = true;
-      this.collection.setSortField(name, "ASC");
-      this.collection.sort();
+      this.collection.setSorting(name, -1)
+      this.collection.fullCollection.sort();
     } else {
       this.sortFlag = false;
-      this.collection.setSortField(name, "DESC");
-      this.collection.sort();
+      this.collection.setSorting(name, 1)
+      this.collection.fullCollection.sort();
     }
   },
   mouseoverFunc: function(event){

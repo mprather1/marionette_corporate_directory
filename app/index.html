@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="public/css/style.css" type="text/css" />
   	<script src="bower_components/jquery/dist/jquery.js"></script>
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap-theme.css" />
+    <link rel="stylesheet" href="bower_components/backgrid/lib/backgrid.css" type="text/css" />
   </head>
   <body>
     
@@ -16,7 +17,7 @@
           <th>Users</th>
         </tr>
         <tr>
-          <th id="name" class="table-header">Name</th>
+          <th id="lastName" class="table-header">Name</th>
           <th id="phone" class="table-header">Phone</th>
           <th id="email" class="table-header">Email</th>
         </tr>
@@ -26,7 +27,7 @@
     </script>
     
     <script type="text/template" id="user-row">
-      <td>{{firstName + " " + lastName}}</td>
+      <td>{{name}}</td>
       <td>{{phone}}</td>
       <td>{{email}}</td>
     </script>
@@ -99,6 +100,7 @@
   	<script src="bower_components/backbone.marionette/lib/backbone.marionette.js"></script>
   	<script src="bower_components/backbone.validation/dist/backbone-validation.js"></script>
   	<script src="bower_components/backbone.paginator/lib/backbone.paginator.js"></script>
+  	<script src="bower_components/backgrid/lib/backgrid.js"></script>
   	<script type="text/javascript" src="main.js"></script>
   </body>
 </html>
