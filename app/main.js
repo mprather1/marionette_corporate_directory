@@ -44,9 +44,19 @@ var User = Backbone.Model.extend({
   },
 });
 
-var Users = Backbone.Collection.extend({
+var Users = Backbone.PageableCollection.extend({
   url: "http://localhost:8000/api/users",
+  mode: 'client',
   model: User,
+  state: {
+    pageSize: 10,
+    // sortKey: 'id',
+    order: 1
+  },
+  queryParams: {
+    totalPages: null,
+    totalRecords: null,
+  },
   comparator: function(m){
     return m.get(this.sortField);
   },
@@ -91,6 +101,16 @@ var UserView = Backbone.Marionette.View.extend({
 var UsersView = Backbone.Marionette.CollectionView.extend({
   tagName: 'tbody',
   childView: UserView,
+  initialize: function(){
+    this.listenTo(Backbone, 'header:nextpage', this.nextPage),
+    this.listenTo(Backbone, 'header:prevpage', this.prevPage)
+  },
+  prevPage: function(){
+    this.collection.getPreviousPage()
+  },
+  nextPage: function(){
+    this.collection.getNextPage()
+  },
 });
 
 var UsersTableView = Backbone.Marionette.View.extend({
@@ -216,6 +236,10 @@ var PageView = Backbone.Marionette.View.extend({
       el: '#form-view',
     }
   },
+  events: {
+    'click .prev-page': 'prevPage',
+    'click .next-page': 'nextPage',
+  },
   onRender: function(){
     this.showChildView('body', new UsersTableView({
       collection: this.collection,
@@ -223,6 +247,12 @@ var PageView = Backbone.Marionette.View.extend({
     this.showChildView('form', new SidebarView({
       collection: this.collection,
     }));
+  },
+  nextPage: function(){
+    Backbone.trigger('header:nextpage')
+  },
+  prevPage: function(){
+    Backbone.trigger('header:prevpage')
   },
 });
 
