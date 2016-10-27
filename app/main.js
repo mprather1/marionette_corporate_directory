@@ -49,7 +49,7 @@ var Users = Backbone.PageableCollection.extend({
   mode: 'client',
   model: User,
   state: {
-    pageSize: 12,
+    pageSize: 14,
     sortKey: 'id',
     order: 1
   },
@@ -97,8 +97,6 @@ var UsersView = Backbone.Marionette.CollectionView.extend({
 
 var UsersTableView = Backbone.Marionette.View.extend({
   initialize: function(){
-    this.sortField = "lastName";
-    this.sortDirection = "DESC";
     this.sortFlag = false;
   },
   tagName: "table",
@@ -119,7 +117,7 @@ var UsersTableView = Backbone.Marionette.View.extend({
     this.showChildView('body', new UsersView({
       collection: this.collection,
     }));
-    this.collection.setSorting('lastName')
+    this.collection.setSorting('lastName', -1)
     this.collection.fullCollection.sort();
   },
   sortUsers: function(flag){
