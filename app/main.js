@@ -128,10 +128,12 @@ var UsersTableView = Backbone.Marionette.View.extend({
       this.sortFlag = true;
       this.collection.setSorting(name, -1)
       this.collection.fullCollection.sort();
+      this.collection.getFirstPage();
     } else {
       this.sortFlag = false;
       this.collection.setSorting(name, 1)
       this.collection.fullCollection.sort();
+      this.collection.getFirstPage()
     }
   },
   mouseoverFunc: function(event){
