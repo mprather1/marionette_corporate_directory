@@ -49,7 +49,7 @@ var Users = Backbone.PageableCollection.extend({
   mode: 'client',
   model: User,
   state: {
-    pageSize: 10,
+    pageSize: 12,
     sortKey: 'id',
     order: 1
   },
@@ -204,30 +204,13 @@ var UsersFormView = Backbone.Marionette.View.extend({
   }
 });
 
-var PageView = Backbone.Marionette.View.extend({
-  tagName: "main",
-  template: '#page-template',
-  regions: {
-    body: {
-      el: '#table-view',
-    },
-    form: {
-      el: '#form-view',
-    }
-  },
-  events: {
+var NavigationView = Backbone.Marionette.View.extend({
+  template: "#navigation-template",
+    events: {
     'click .prev-page': 'prevPage',
     'click .next-page': 'nextPage',
     'click .first-page': 'firstPage',
     'click .last-page': 'lastPage',
-  },
-  onRender: function(){
-    this.showChildView('body', new UsersTableView({
-      collection: this.collection,
-    }));
-    this.showChildView('form', new SidebarView({
-      collection: this.collection,
-    }));
   },
   nextPage: function(){
     Backbone.trigger('header:nextpage')
@@ -243,7 +226,35 @@ var PageView = Backbone.Marionette.View.extend({
   },
   currentPage: function(e, i){
     console.log("e: " + e + " i: " + i) 
+  }
+})
+
+var PageView = Backbone.Marionette.View.extend({
+  tagName: "main",
+  template: '#page-template',
+  regions: {
+    body: {
+      el: '#table-view',
+    },
+    form: {
+      el: '#form-view',
+    },
+    navigation: {
+      el: '#navigation-view',
+      replaceElement: false
+    }
   },
+  onRender: function(){
+    this.showChildView('body', new UsersTableView({
+      collection: this.collection,
+    }));
+    this.showChildView('form', new SidebarView({
+      collection: this.collection,
+    }));
+    this.showChildView('navigation', new NavigationView({
+      
+    }));
+  }
 });
 
 var SidebarView = Backbone.Marionette.View.extend(({
