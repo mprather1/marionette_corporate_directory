@@ -67,7 +67,7 @@ var UserView = Backbone.Marionette.View.extend({
       "name": this.model.attributes.firstName.capitalizedFirstLetter() + " " + this.model.attributes.lastName.capitalizedFirstLetter(),
       "lastName": this.model.attributes.lastName.capitalizedFirstLetter(),
       "phone": this.model.attributes.phone.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3'),
-      "email": this.model.attributes.email
+      "email": "<a href='mailto:" + this.model.attributes.email + "'>" + this.model.attributes.email + "</a>"
     };
   }
 });
